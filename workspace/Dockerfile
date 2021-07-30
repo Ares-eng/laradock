@@ -144,6 +144,9 @@ RUN chown -R laradock:laradock /home/laradock/.composer
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/.bashrc
 
+# 设置阿里镜像
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/;
+
 # Update composer
 ARG COMPOSER_VERSION=2
 ENV COMPOSER_VERSION ${COMPOSER_VERSION}
@@ -811,9 +814,9 @@ ENV YARN_VERSION ${YARN_VERSION}
 RUN if [ ${INSTALL_YARN} = true ]; then \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
     if [ ${YARN_VERSION} = "latest" ]; then \
-        curl -o- -L https://yarnpkg.com/install.sh | bash; \
+        npm install -g yarn \
     else \
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
+        npm install -g yarn@${YARN_VERSION}; \
     fi && \
     echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.bashrc \
@@ -827,6 +830,8 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.bashrc && \
     echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.bashrc \
 ;fi
+
+RUN yarn config set registry http://registry.npm.taobao.org/;
 
 # Add PATH for YARN
 ENV PATH $PATH:/home/laradock/.yarn/bin
