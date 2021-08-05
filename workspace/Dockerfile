@@ -150,11 +150,6 @@ RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/compos
 # Update composer
 ARG COMPOSER_VERSION=2
 ENV COMPOSER_VERSION ${COMPOSER_VERSION}
-RUN if [ "$COMPOSER_VERSION" = "1" ] || [ "$COMPOSER_VERSION" = "2" ]; then \
-         composer self-update --${COMPOSER_VERSION}; \
-    else \
-         composer self-update ${COMPOSER_VERSION}; \
-    fi;
 
 USER laradock
 
