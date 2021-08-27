@@ -773,7 +773,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     ln -s $NODE_MODS_DIR/vue-cli/bin/vue-list /usr/local/bin/vue-list \
 ;fi
 
-RUN if [ ${NPM_REGISTRY} ]; then \
+RUN if [ ${NPM_REGISTRY} -a ${INSTALL_NODE} = true ]; then \
     . ~/.bashrc && npm config set registry ${NPM_REGISTRY} \
 ;fi
 
@@ -825,7 +825,9 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.bashrc \
 ;fi
 
-RUN yarn config set registry http://registry.npm.taobao.org/;
+RUN if [ ${INSTALL_YARN} = true ]; then \
+    yarn config set registry http://registry.npm.taobao.org/ \
+;fi
 
 # Add PATH for YARN
 ENV PATH $PATH:/home/laradock/.yarn/bin
