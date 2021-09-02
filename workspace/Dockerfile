@@ -142,10 +142,8 @@ RUN chown -R laradock:laradock /home/laradock/.composer
 
 # Export composer vendor path
 RUN echo "" >> ~/.bashrc && \
-    echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+    echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >> ~/.bashrc
 
-# 设置阿里镜像
-RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/;
 
 # Update composer
 ARG COMPOSER_VERSION=2
@@ -174,6 +172,7 @@ RUN if [ ${COMPOSER_AUTH} = false ]; then \
 ARG COMPOSER_REPO_PACKAGIST
 ENV COMPOSER_REPO_PACKAGIST ${COMPOSER_REPO_PACKAGIST}
 
+# 设置镜像
 RUN if [ ${COMPOSER_REPO_PACKAGIST} ]; then \
     composer config -g repo.packagist composer ${COMPOSER_REPO_PACKAGIST} \
 ;fi
@@ -1541,7 +1540,8 @@ ARG SHELL_OH_MY_ZSH_ALIASES=false
 
 USER laradock
 RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --keep-zshrc" && \
+    git clone https://hub.fastgit.org/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh && \
+    cp ~/.oh-my-zsh/templates/zshrc.zsh-template /home/laradock/.zshrc && \
     sed -i -r 's/^plugins=\(.*?\)$/plugins=(laravel5)/' /home/laradock/.zshrc && \
     echo '\n\
 bindkey "^[OB" down-line-or-search\n\
@@ -1556,7 +1556,7 @@ bindkey "^[[5~" up-line-or-history\n\
 bindkey "^[[6~" down-line-or-history\n\
 bindkey "^?" backward-delete-char\n' >> /home/laradock/.zshrc && \
   if [ ${SHELL_OH_MY_ZSH_AUTOSUGESTIONS} = true ]; then \
-    sh -c "git clone https://github.com/zsh-users/zsh-autosuggestions /home/laradock/.oh-my-zsh/custom/plugins/zsh-autosuggestions" && \
+    sh -c "git clone https://hub.fastgit.org/zsh-users/zsh-autosuggestions.git /home/laradock/.oh-my-zsh/custom/plugins/zsh-autosuggestions" && \
     sed -i 's~plugins=(~plugins=(zsh-autosuggestions ~g' /home/laradock/.zshrc && \
     sed -i '1iZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20' /home/laradock/.zshrc && \
     sed -i '1iZSH_AUTOSUGGEST_STRATEGY=(history completion)' /home/laradock/.zshrc && \
