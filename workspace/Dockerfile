@@ -1650,12 +1650,6 @@ RUN set -eux; \
     php -m | grep -q 'zookeeper'; \
     fi
 
-# Install Ngrok2
-RUN curl -s -O https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip \
-    && unzip ngrok-stable-linux-amd64.zip \
-    && mv ngrok /usr/local/bin/ \
-    && rm -f ngrok-stable-linux-amd64.zip
-
 #
 #--------------------------------------------------------------------------
 # Final Touch

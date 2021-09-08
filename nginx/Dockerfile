@@ -24,6 +24,12 @@ RUN set -x ; \
     addgroup -g 82 -S www-data ; \
     adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 
+# Install Ngrok2
+RUN curl -s -O https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip \
+    && unzip ngrok-stable-linux-amd64.zip \
+    && mv ngrok /usr/local/bin/ \
+    && rm -f ngrok-stable-linux-amd64.zip
+
 ARG PHP_UPSTREAM_CONTAINER=php-fpm
 ARG PHP_UPSTREAM_PORT=9000
 
