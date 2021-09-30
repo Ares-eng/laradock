@@ -954,6 +954,8 @@ RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
     composer global require laravel/envoy \
 ;fi
 
+RUN composer global require laravel/envoy
+
 ###########################################################################
 # Laravel Installer:
 ###########################################################################
